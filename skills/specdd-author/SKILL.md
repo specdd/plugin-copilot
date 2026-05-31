@@ -1,13 +1,14 @@
 ---
-name: specdd-trace
-description: Use when GitHub Copilot needs to trace SpecDD specs to code, tests, docs, changed files, or coverage gaps.
+name: specdd-author
+description: Use when GitHub Copilot needs to author or revise SpecDD `.sdd` specs in an existing SpecDD project.
 license: Apache-2.0
 ---
 
-# SpecDD Trace
+# SpecDD Author
 
-Use this skill to explain how specs, files, tests, and changes relate. Do not
-edit files unless the user explicitly asks for changes.
+Use this skill to create or improve specs in an existing SpecDD project.
+If `.specdd/bootstrap.md` is missing, use `specdd-adopt` first.
+Do not change implementation files unless the user explicitly asks for implementation work too.
 
 ## Skill Scope
 
@@ -45,20 +46,22 @@ Do not reread an entire chain just because a workflow phase changed. Reopen the 
 
 ## Workflow
 
-1. Inspect implementation, tests, or diffs needed to connect contracts to behavior.
-2. Identify the reason each file or spec is included.
-3. When useful and available, consider consulting the `specdd-cli` skill for CLI-assisted spec discovery; treat any output as read context, not authority.
-4. Report missing links, stale specs, untested scenarios, or unclear authority.
+1. Ensure existing ancestor specs for the target area are known before adding new specs; reread the nearest relevant spec when exact wording matters.
+2. Identify the smallest useful spec boundary for the requested authoring work.
+3. When useful and available, consider consulting the `specdd-cli` skill for CLI-assisted spec discovery or linting; read or reread relevant governing specs directly when exact contract text is needed.
+4. Treat the user's explicit request as target scope, then create or edit `.sdd` files only inside authority granted by the active spec chain.
+5. Keep specs short, local, behavioral, and constraint-oriented.
 
-## Trace Output
+## Authoring Rules
 
-For each relevant item, identify:
+- Prefer a root or nearest-area spec before adding narrow child specs.
+- Use path-based ownership and explicit `References`; do not imply authority from similar names or nearby files.
+- Include only sections that add useful local authority, constraints, behavior, tasks, or context.
+- Use `Can modify` or `Owns` to make write authority discoverable.
+- Do not copy the full SpecDD framework rules into project specs.
+- Do not turn uncertain observations into durable contracts.
+- If write authority, ownership, public behavior, or security scope is unclear, stop and ask.
 
-- Why it was included, such as bootstrap, ancestor spec, nearest local spec, explicit reference, requested file, or
-  changed file.
-- The active constraints or behaviors it contributes.
-- The code, tests, docs, or tasks that satisfy or fail to satisfy it.
-- Any missing link, stale spec, untested scenario, or unclear authority.
+## Reporting
 
-Do not expand write authority. Referenced files remain read context unless the
-active spec chain grants modification authority.
+Report the bootstrap files and specs used, specs created or changed, intended governing scope, and any unresolved authoring decisions.

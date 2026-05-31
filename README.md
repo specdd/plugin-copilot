@@ -8,6 +8,8 @@ Install all SpecDD skills with GitHub CLI:
 
 ```bash
 gh skill install specdd/plugin-copilot specdd-adopt
+gh skill install specdd/plugin-copilot specdd-author
+gh skill install specdd/plugin-copilot specdd-cli
 gh skill install specdd/plugin-copilot specdd-debug
 gh skill install specdd/plugin-copilot specdd-do
 gh skill install specdd/plugin-copilot specdd-docs
@@ -31,7 +33,8 @@ Learn more about SpecDD at https://specdd.ai.
 The skills help GitHub Copilot read a target project's active
 `.specdd/bootstrap.md` chain, resolve local spec authority, and work through
 orientation, explanation, planning, implementation, review, testing, tracing,
-documentation, refactoring, debugging, and risk assessment.
+documentation, refactoring, debugging, risk assessment, SpecDD adoption, spec
+authoring, and CLI-assisted SpecDD work.
 
 This repository is generated automatically from the SpecDD agent plugins source
 repository:

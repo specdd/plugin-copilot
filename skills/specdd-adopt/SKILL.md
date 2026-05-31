@@ -1,55 +1,36 @@
 ---
 name: specdd-adopt
-description: Use when GitHub Copilot needs to create, add, restructure, or improve SpecDD `.sdd` contract files, define ownership or write authority, clean up missing or unclear specs, or introduce SpecDD adoption without changing implementation unless explicitly requested.
+description: Use when GitHub Copilot needs to add SpecDD to a project or update SpecDD framework files through the CLI before normal SpecDD work begins.
 license: Apache-2.0
 ---
 
 # SpecDD Adopt
 
-Use this skill to create or improve specs. Do not change implementation files
-unless the user explicitly asks for implementation work too.
-
-## Bootstrap Resolution
-
-Before doing anything else in the target project, read bootstrap files in this exact order:
-
-1. `.specdd/bootstrap.md`
-2. `.specdd/bootstrap.project.md`, if it exists
-3. `.specdd/bootstrap.local.md`, if it exists
-
-Apply them in that order. Later files may narrow or specialize earlier rules, but must not silently weaken project contracts, inherited constraints, or write authority.
-
-## Spec Chain Resolution
-
-Before planning, editing, reviewing, testing, or reporting on a target:
-
-1. Identify the target path, task, behavior, or changed files.
-2. Resolve the effective spec chain using the active bootstrap rules.
-3. Include same-directory basename specs when applicable.
-4. Walk ancestor specs from the selected content root to the target.
-5. Read explicit `References` only when they affect the requested work.
-6. Identify the nearest local spec that grants write authority before any edit.
-
-Do not infer authority from similar filenames, nearby files, symbols, module names, or conventions unless the active bootstrap or a governing spec explicitly defines that mapping.
+Use this skill to help a repository adopt SpecDD through the `specdd` CLI.
+If `.specdd/bootstrap.md` already exists, use this skill only for operator-requested framework bootstrap updates; use `specdd-author` for spec authoring or another task-specific SpecDD skill.
 
 ## Workflow
 
-1. Read existing ancestor specs for the target area before adding new specs.
-2. Identify the smallest useful spec boundary for the requested adoption work.
-3. Treat the user's explicit request as target scope, then create or edit `.sdd` files only inside authority granted by the active spec chain.
-4. Keep specs short, local, behavioral, and constraint-oriented.
+1. Check whether the target repository already has `.specdd/bootstrap.md` or existing `.sdd` contracts.
+2. If no bootstrap exists and the operator asked to add SpecDD, use the `specdd-cli` skill and the `specdd` CLI to initialize bootstrap files.
+3. If bootstrap files exist and the operator asked to update SpecDD framework files, use the `specdd-cli` skill and the `specdd` CLI to update them.
+4. If the CLI is unavailable, report that setup or update is blocked until the CLI is available.
+5. After CLI initialization, and after CLI update only when framework files changed, read the active bootstrap chain before proposing or creating local `.sdd` specs.
+6. If the target is already a SpecDD project and the operator did not ask for framework updates, switch to `specdd-author` or the relevant task-specific skill.
+7. Inspect only the repo shape needed for initial boundaries: top-level directories, docs, manifests, tests, and major entry points.
+8. Propose the smallest useful initial shape, usually a root project spec before narrower child specs.
+9. Create `.sdd` files only when the user explicitly requested or approved that adoption scope.
 
 ## Adoption Rules
 
-- Prefer a root or nearest-area spec before adding narrow child specs.
-- Use path-based ownership and explicit `References`; do not imply authority from similar names or nearby files.
+- Use the CLI to add or update SpecDD framework bootstrap files when the operator asks for setup or framework updates.
+- Do not manually install, update, edit, or copy SpecDD framework bootstrap files outside the CLI.
+- Do not change implementation files unless the user explicitly asks for implementation work too.
+- Use path-based ownership, explicit `References`, and `Can modify` or `Owns` to make proposed authority discoverable.
 - Include only sections that add useful local authority, constraints, behavior, tasks, or context.
-- Use `Can modify` or `Owns` to make write authority discoverable.
-- Do not copy the full SpecDD framework rules into project specs.
-- Do not turn uncertain observations into durable contracts.
-- If write authority, ownership, public behavior, or security scope is unclear, stop and ask.
+- Do not present guessed behavior as an active contract; label assumptions or ask for confirmation.
+- Keep proposed or created specs short, local, behavioral, and constraint-oriented.
 
 ## Reporting
 
-Report the bootstrap files read, specs created or changed, intended governing scope,
-and any unresolved adoption decisions.
+Report whether the repository was already bootstrapped, CLI setup or update status, the adoption scope, specs proposed or created, and any setup left to the user.
